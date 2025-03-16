@@ -1,6 +1,8 @@
+// search_page.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:task_weather_app/features/weather/presentation/bloc/weather/weather_cubit.dart';
+import 'package:task_weather_app/features/weather/presentation/bloc/weather/weather_bloc.dart';
+import 'package:task_weather_app/features/weather/presentation/bloc/weather/weather_events.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({super.key});
@@ -31,19 +33,16 @@ class _SearchPageState extends State<SearchPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: Colors.transparent,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_rounded, color: Colors.white),
-          onPressed: () => Navigator.pop(context),
-        ),
+        backgroundColor: Colors.white,
         title: const Text(
-          'Search City',
+          'Weather App',
           style: TextStyle(
             fontSize: 22,
             fontWeight: FontWeight.bold,
-            color: Colors.white,
+            color: Colors.green,
           ),
         ),
       ),
@@ -68,10 +67,10 @@ class _SearchPageState extends State<SearchPage> {
                 controller: _searchController,
                 focusNode: _focusNode,
                 textInputAction: TextInputAction.search,
-                style: const TextStyle(fontSize: 18),
+                style: const TextStyle(fontSize: 18, color: Colors.black),
                 onSubmitted: (value) async {
                   if (value.trim().isNotEmpty) {
-                    context.read<WeatherCubit>().getWeather(cityName: value);
+                    context.read<WeatherBloc>().add(GetWeatherEvent(cityName: value));
                     Navigator.pop(context);
                   }
                 },
@@ -81,53 +80,48 @@ class _SearchPageState extends State<SearchPage> {
                     vertical: 16,
                   ),
                   hintText: 'Enter city name',
-                  hintStyle: TextStyle(color: Colors.grey[200]),
+                  label: const Text(
+                    'City Name',
+                    style: TextStyle(color: Colors.green),
+                  ),
+                  hintStyle: const TextStyle(color: Colors.black),
+                  prefixIcon: const Icon(Icons.insert_chart_outlined_sharp, color: Colors.green),
                   suffixIcon: IconButton(
-                    icon: const Icon(Icons.search_rounded, color: Colors.blueAccent, size: 28),
+                    icon: const Icon(Icons.search_rounded, color: Colors.green, size: 28),
                     onPressed: () {
                       if (_searchController.text.trim().isNotEmpty) {
-                        context.read<WeatherCubit>().getWeather(cityName: _searchController.text);
+                        context.read<WeatherBloc>().add(
+                          GetWeatherEvent(cityName: _searchController.text),
+                        );
                         Navigator.pop(context);
                       }
                     },
                   ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(15),
+                    borderSide: const BorderSide(color: Colors.green, width: 2),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(15),
+                    borderSide: const BorderSide(color: Colors.green, width: 2),
+                  ),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(15),
-                    borderSide: BorderSide.none,
+                    borderSide: const BorderSide(color: Colors.green, width: 2),
                   ),
                 ),
               ),
             ),
             const SizedBox(height: 30),
-            Expanded(
-              child: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Image.asset(
-                      'assets/images/search_city.png', // Add this image to your assets
-                      height: 180,
-                      fit: BoxFit.contain,
-                      errorBuilder: (context, error, stackTrace) {
-                        return Icon(
-                          Icons.search,
-                          size: 100,
-                          color: Colors.grey[300],
-                        );
-                      },
-                    ),
-                    const SizedBox(height: 20),
-                    Text(
-                      'Search for a city to see weather details',
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.grey[600],
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
-                ),
+            const Text(
+              'Enter a city name to get\nthe latest weather information',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w600,
+                color: Colors.red,
+                height: 1.5,
               ),
+              textAlign: TextAlign.center,
             ),
           ],
         ),

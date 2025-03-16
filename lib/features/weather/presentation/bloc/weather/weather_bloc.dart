@@ -4,14 +4,22 @@ import 'package:task_weather_app/features/weather/domain/usecases/get_weather_us
 
 import 'weather_states.dart';
 
-class WeatherCubit extends Cubit<WeatherStates> {
+import 'weather_events.dart';
+
+class WeatherBloc extends Bloc<WeatherEvent, WeatherStates> {
   final GetWeatherUseCase getWeatherUseCase;
 
-  WeatherCubit(this.getWeatherUseCase) : super(WeatherInitialState());
+  WeatherBloc(this.getWeatherUseCase) : super(WeatherInitialState()) {
+    // Register event handlers
+    on<GetWeatherEvent>(_onGetWeather);
+  }
 
-  Future<void> getWeather({required String cityName}) async {
+  Future<void> _onGetWeather(
+      GetWeatherEvent event,
+      Emitter<WeatherStates> emit
+      ) async {
     emit(WeatherLoadingState());
-    final result = await getWeatherUseCase(cityName);
+    final result = await getWeatherUseCase(event.cityName);
 
     result.fold(
           (Failure failure) => emit(WeatherFailureState(failure)),

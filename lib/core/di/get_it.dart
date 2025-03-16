@@ -4,12 +4,13 @@ import 'package:task_weather_app/features/weather/data/datasources/weather_remot
 import 'package:task_weather_app/features/weather/data/repositories/weather_repository_impl.dart';
 import 'package:task_weather_app/features/weather/domain/repositories/weather_repository.dart';
 import 'package:task_weather_app/features/weather/domain/usecases/get_weather_usecase.dart';
-import 'package:task_weather_app/features/weather/presentation/bloc/weather/weather_cubit.dart';
+import 'package:task_weather_app/features/weather/presentation/bloc/weather/weather_bloc.dart';
+
 final instance = GetIt.instance;
 
 void init() {
-  // Cubit / Bloc
-  instance.registerFactory(() => WeatherCubit(instance()));
+  // Bloc
+  instance.registerFactory(() => WeatherBloc(instance()));
 
   // Use cases
   instance.registerLazySingleton(() => GetWeatherUseCase(instance()));
