@@ -31,8 +31,6 @@ class WeatherInfoBody extends StatelessWidget {
               children: [
                 _buildWeatherHeader(textColor),
                 const SizedBox(height: 32),
-                WeatherIconWidget(condition: weather.weatherCondition, size: 80),
-                const SizedBox(height: 32),
                 WeatherDetailsCard(weather: weather, themeColor: themeColor),
                 const SizedBox(height: 32),
                 _buildForecastHeader(textColor),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:task_weather_app/features/weather/domain/entities/weather_entity.dart';
+import 'package:task_weather_app/features/weather/presentation/widgets/weather_icon_widget.dart';
 
 class WeatherDetailsCard extends StatelessWidget {
   final WeatherEntity weather;
@@ -29,25 +30,23 @@ class WeatherDetailsCard extends StatelessWidget {
           ),
         ],
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          const Text(
-            "Weather Details",
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-              color: textColor,
-            ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _buildDetailRow('Avg Temp:', '${weather.avgTemp}°', textColor),
+              _buildDetailRow('Max Temp:', '${weather.maxTemp}°', textColor),
+              _buildDetailRow('Min Temp:', '${weather.minTemp}°', textColor),
+              _buildDetailRow('Humidity:', '${weather.humidity}%', textColor),
+              _buildDetailRow('Pressure:', '${weather.pressure} mb', textColor),
+              _buildDetailRow('Wind:', '${weather.wind} km/h', textColor),
+              _buildDetailRow('Visible:', '${weather.visibility} km', textColor),
+            ],
           ),
-          const Divider(height: 24, color: Colors.white54),
-          _buildDetailRow('Avg Temp:', '${weather.avgTemp}°', textColor),
-          _buildDetailRow('Max Temp:', '${weather.maxTemp}°', textColor),
-          _buildDetailRow('Min Temp:', '${weather.minTemp}°', textColor),
-          _buildDetailRow('Humidity:', '${weather.humidity}%', textColor),
-          _buildDetailRow('Pressure:', '${weather.pressure} mb', textColor),
-          _buildDetailRow('Wind:', '${weather.wind} km/h', textColor),
-          _buildDetailRow('Visible:', '${weather.visibility} km', textColor),
+          WeatherIconWidget(condition: weather.weatherCondition, size: 80),
+
         ],
       ),
     );
@@ -57,7 +56,6 @@ class WeatherDetailsCard extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
             label,
