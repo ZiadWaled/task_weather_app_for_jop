@@ -90,16 +90,20 @@ class WeatherInfoBody extends StatelessWidget {
   }
 
   Widget _buildForecastSection(MaterialColor themeColor) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: weather.hourlyForecasts.take(3).map((forecast) {
-        return WeatherForecastCard(
-          time: forecast.time,
-          temp: '${forecast.temp}°',
-          condition: forecast.condition,
-          themeColor: themeColor,
-        );
-      }).toList(),
+    return SingleChildScrollView(
+scrollDirection: Axis.horizontal,
+      child: Row(
+        spacing: 10,
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: weather.hourlyForecasts.map((forecast) {
+          return WeatherForecastCard(
+            time: forecast.time,
+            temp: '${forecast.temp}°',
+            condition: forecast.condition,
+            themeColor: Colors.grey,
+          );
+        }).toList(),
+      ),
     );
   }
 }
